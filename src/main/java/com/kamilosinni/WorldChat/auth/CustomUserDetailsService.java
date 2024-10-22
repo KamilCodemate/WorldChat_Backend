@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+
     /**
      * Locates the user based on the username. In the actual implementation, the search
      * may possibly be case sensitive, or case insensitive depending on how the

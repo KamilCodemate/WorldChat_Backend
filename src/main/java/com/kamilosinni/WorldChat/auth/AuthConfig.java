@@ -3,6 +3,8 @@ package com.kamilosinni.WorldChat.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -26,6 +28,12 @@ import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter
 public class AuthConfig {
 
     private final CustomUserDetailsService customUserDetailsService;
+
+    @Bean
+    static RoleHierarchy roleHierarchy() {
+        return RoleHierarchyImpl.withDefaultRolePrefix().role("ADMIN").implies("USER").build();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -61,6 +69,7 @@ public class AuthConfig {
 
         return http.build();
     }
+
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();

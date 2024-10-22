@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class WorldChatApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WorldChatApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WorldChatApplication.class, args);
+    }
 
 }

@@ -8,6 +8,13 @@ spring:
     username: root
     password: 12341234
     url: jdbc:mysql://localhost:3306/worldchat
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
 server:
   servlet:
     session:
@@ -18,3 +25,4 @@ logging:
     org.springframework.security: TRACE
     org.springframework.security.web: TRACE
     org.springframework.security.config: TRACE
+

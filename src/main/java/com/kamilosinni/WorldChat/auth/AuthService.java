@@ -7,12 +7,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
+    private static final Map<String, String> verificationCodes = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public void registerUser(String username, String email, String password) {
         if (userRepository.findUserByUsernameOrEmail(username).isPresent()) {
@@ -29,7 +39,19 @@ public class AuthService {
                 .role(Role.ROLE_USER)
                 .build();
 
+        String code = emailService.generateVerificationCode(email);
+
+
         userRepository.save(user);
+        verificationCodes.put(email, code);
+        scheduler.schedule(() -> {
+            verificationCodes.remove(email);
+            userRepository.deleteById(user.getId());
+        }, 10, java.util.concurrent.TimeUnit.MINUTES);
+        emailService.sendEmail(email, code);
+
 
     }
+
+
 }

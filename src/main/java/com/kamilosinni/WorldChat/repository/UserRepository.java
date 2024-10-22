@@ -13,13 +13,11 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     /**
-     *
      * @param usernameOrEmail
      * @return {@link Optional} of {@link User} with given username or email
      */
     @Query("SELECT u FROM User u WHERE u.username = :usernameOrEmail OR u.email = :usernameOrEmail")
     Optional<User> findUserByUsernameOrEmail(@Param("usernameOrEmail") String usernameOrEmail);
-
 
 
 }

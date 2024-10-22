@@ -9,7 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.UUID;
 
 @Builder
@@ -67,6 +67,7 @@ public class User implements UserDetails {
     @Column(name = "locked", nullable = false)
     @Builder.Default
     private boolean locked = false;
+
     /**
      * Returns the authorities granted to the user. Cannot return <code>null</code>.
      *
@@ -74,7 +75,7 @@ public class User implements UserDetails {
      */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return Collections.singletonList(() -> this.role.name());
     }
 
     /**
@@ -97,7 +98,7 @@ public class User implements UserDetails {
      */
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return false;
     }
 
     /**
